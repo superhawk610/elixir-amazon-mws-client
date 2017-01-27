@@ -1,5 +1,4 @@
 defmodule MWSClient do
-
   use HTTPoison.Base
 
   alias MWSClient.Config
@@ -8,14 +7,6 @@ defmodule MWSClient do
 
   def request(operation = %Operation{}, config = %Config{}) do
     uri = Request.to_uri(operation, config)
-    
     response = post uri, uri.query
-    
   end
-
-
-
-
-
-
 end

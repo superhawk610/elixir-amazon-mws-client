@@ -3,7 +3,7 @@ defmodule MWSClient.ParserTest do
   use ExUnit.Case
 
   test "get report" do
-    assert 17 == MWSClient.Parser.parse(get_report_response) |> Enum.count
+    assert 17 == MWSClient.Parser.parse(get_report_response()) |> Enum.count
   end
 
   def get_report_response do
@@ -28,7 +28,7 @@ defmodule MWSClient.ParserTest do
  #  end
 
   test "parses response" do
-    m = response |> MWSClient.Parser.parse
+    m = response() |> MWSClient.Parser.parse
     list = get_in m, ["GetReportRequestListResponse","GetReportRequestListResult","ReportRequestInfo"]
     assert length(list) == 10
   end
