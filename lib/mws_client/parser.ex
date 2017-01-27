@@ -4,7 +4,7 @@ defmodule MWSClient.Parser do
   Get back an enumerator based on the headers
   """
 
-  def parse({:ok, %{body: body, headers: headers, status_code: _status_code}}) do
+  def parse(%{body: body, headers: headers, status_code: _status_code}) do
     case get_content_type(headers) do
       "text/xml" -> XmlToMap.naive_map(body)
       "text/plain;charset=" <> _charset ->
