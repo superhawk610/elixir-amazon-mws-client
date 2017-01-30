@@ -39,13 +39,16 @@ defmodule MWSClient.Utils do
   defp invalid_key?(_key, []) do
     false
   end
+
   defp invalid_key?(key, white_list) do
     Enum.all?(white_list, &(&1 != key))
   end
 
-
-  def to_operation(params, version, path) do
-    %Operation{params: Map.merge(params, %{"Version" => version}), path: path}
+  def to_operation(params, version, path, body \\ nil, headers \\ []) do
+    %Operation{params: Map.merge(params, %{"Version" => version}), path: path, body: body, headers: headers}
   end
 
+  def content_md5(data) do
+    :erlang.md5(data) |> Base.encode64()
+  end
 end

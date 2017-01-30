@@ -1,3 +1,3 @@
 defmodule RequestError do
-  defexception [message: "Reeor occured"]
+  defexception [message: "Error occured"]
 end
