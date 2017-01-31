@@ -41,7 +41,8 @@ defmodule MWSClient.Mixfile do
       {:elixir_xml_to_map, github: "retgoat/elixir-xml-to-map", tag: "0.1.2"},
       {:httpoison, "~> 0.11.0"},
       {:inflex, "~> 1.7.0" }, #camelize
-      {:ex_doc, "~> 0.10", only: :dev}
+      {:ex_doc, "~> 0.10", only: :dev},
+      {:exsync, "~> 0.1", only: :dev}
     ]
   end
 end

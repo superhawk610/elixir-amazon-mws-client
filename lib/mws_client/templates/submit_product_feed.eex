@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AmazonEnvelope>
+  <Header>
+    <DocumentVersion>1.01</DocumentVersion>
+    <MerchantIdentifier><%= seller_id %></MerchantIdentifier>
+  </Header>
+  <MessageType>Product</MessageType>
+  <PurgeAndReplace><%= purge_and_replace %></PurgeAndReplace>
+  <Message>
+    <MessageID>1</MessageID>
+    <OperationType>Update</OperationType>
+    <% for product <- @products do %>
+      <Product>
+        <SKU><%= product.sku %></SKU>
+        <StandardProductID>
+          <Type>ASIN</Type>
+          <Value><%= product.asin %></Value>
+        </StandardProductID>
+        <ProductTaxCode><%= product.tax_code %></ProductTaxCode>
+        <DescriptionData>
+          <Title><%= product.title %></Title>
+          <Brand><%= product.brand %></Brand>
+          <Description><%= product.description %></Description>
+          <% for point <- product.bullet_points do %>
+            <BulletPoint>point</BulletPoint>
+            <BulletPoint>point</BulletPoint>
+          <% end %>
+          <MSRP currency="<%= product.currency %>"><%= product.price %></MSRP>
+          <Manufacturer><%= product.manufacturer %></Manufacturer>
+          <ItemType><%= product.item_type %></ItemType>
+        </DescriptionData>
+        <ProductData>
+          <Health>
+            <ProductType>
+              <HealthMisc>
+                <Ingredients>Example Ingredients</Ingredients>
+                <Directions>Example Directions</Directions>
+              </HealthMisc>
+            </ProductType>
+          </Health>
+        </ProductData>
+      </Product>
+    <% end %>
+  </Message>
+</AmazonEnvelope>

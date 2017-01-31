@@ -1,43 +1,85 @@
 # MWSClient
 
-** An Elixir client for accessing Amazon's Merchant Web Services **
 
-Inspired by ruby https://github.com/hakanensari/peddler gem api and 
-elixir https://github.com/zachgarwood/elixir-amazon-product-advertising-client for signature signing.
+**An Elixir client for accessing Amazon's Merchant Web Services**
 
-Only implemented APIs for what I needed, other API's need to be ported as I go along.
+Inspired by ruby [peddler](https://github.com/hakanensari/peddler) gem and
+elixir [elixir-amazon-product-advertising-client](https://github.com/zachgarwood/elixir-amazon-product-advertising-client) for signature signing.
+
 
 ## Usage:
 
-  1. Fill out a %MWSClient.Config struct that holds credentials needed for signature creation.
+Firstly, you need to fill `%Config` struct.
 
-  ```elixir
-    config = %MWSClient.Config{aws_access_key_id: ..., mws_auth_token: ...}
-  ```
+```elixir
+config = %MWSClient.Config{aws_access_key_id: "SomeKey", seller_id: "SellerId", aws_secret_access_key: "SecretKey"}
+```
 
-  2. An api call is done in two parts, the operation piped to the request
+Then just call needed endpoint
 
-  ```elixir
-  MWSClient.Products.get_matching_product(["B00KO1C94A"]) |> MWSClient.request(config)
-  ```
+**Request:**
 
-  The first part creates an %MWSClient.Operation struct holding basic parts of the API call,
-  e.g map of parameters to send, the path, the method.
+Example XML
 
-  The second part the MWSClient.request appends additional parameters from your config struct, creates a signature and makes the API call.  The result is a %HTTPoison{} struct.
+```elixir
+x = """
+<?xml version="1.0" encoding="utf-8"?>
+<AmazonEnvelope>
+  <Header>
+    <DocumentVersion>1.01</DocumentVersion>
+    <MerchantIdentifier>M_EXAMPLE_123456</MerchantIdentifier>
+  </Header>
+  <MessageType>Product</MessageType>
+  <PurgeAndReplace>false</PurgeAndReplace>
+  <Message>
+    <MessageID>1</MessageID>
+    <OperationType>Update</OperationType>
+    <Product>
+      <SKU>56789</SKU>
+      <StandardProductID>
+        <Type>ASIN</Type>
+        <Value>B0EXAMPLEG</Value>
+      </StandardProductID>
+      <ProductTaxCode>A_GEN_NOTAX</ProductTaxCode>
+      <DescriptionData>
+        <Title>Example Product Title</Title>
+        <Brand>Example Product Brand</Brand>
+        <Description>This is an example product description.</Description>
+        <BulletPoint>Example Bullet Point 1</BulletPoint>
+        <BulletPoint>Example Bullet Point 2</BulletPoint>
+        <MSRP currency="USD">25.19</MSRP>
+        <Manufacturer>Example Product Manufacturer</Manufacturer>
+        <ItemType>example-item-type</ItemType>
+      </DescriptionData>
+      <ProductData>
+        <Health>
+          <ProductType>
+            <HealthMisc>
+              <Ingredients>Example Ingredients</Ingredients>
+              <Directions>Example Directions</Directions>
+            </HealthMisc>
+          </ProductType>
+        </Health>
+      </ProductData>
+    </Product>
+  </Message>
+</AmazonEnvelope>
+"""
 
-  3. Pipe that into a parser to facilitate enumerating over csv or xml response body.
+MWSClient.submit_product_feed(x, config)
 
-  ```elixir
-  MWSClient.Products.get_matching_product(["B00KO1C94A"]) |> MWSClient.request(config)
-   |> MWSClient.Parse.parse
-  ```
+```
 
-  MWSClient.Parser.parse determines the enumerable based on the response header content-type.
+**Response:**
 
-========
-TODO:
-file upload
+```elixir
+	{:success,
+	 %{"SubmitFeedResponse" => %{"ResponseMetadata" => %{"RequestId" => "228b6ebb-5c4f-4cc4-bad1-53ce4635261a"},
+	     "SubmitFeedResult" => %{"FeedSubmissionInfo" => %{"FeedProcessingStatus" => "_SUBMITTED_",
+	         "FeedSubmissionId" => "50012017196",
+	         "FeedType" => "_POST_PRODUCT_DATA_",
+	         "SubmittedDate" => "2017-01-30T10:38:17+00:00"}}}}}
+```
 
 
 ## Installation
@@ -59,4 +101,9 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
       [applications: [:mws_client]]
     end
     ```
+
+## Useful info
+
+1. [Amazon sandbox app](https://mws.amazonservices.com/scratchpad/index.html)
+2. [Amazon developer documentation](https://developer.amazonservices.com/index.html/163-0965275-1355800)
 
