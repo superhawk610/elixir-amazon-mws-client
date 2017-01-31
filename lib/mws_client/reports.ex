@@ -1,13 +1,13 @@
 defmodule MWSClient.Reports do
-  
+
   @version "2009-01-01"
   @path "/"
 
   alias MWSClient.Utils
-  alias MWSClient.Operation
+  # alias MWSClient.Operation
 
   @doc """
-  Takes a required report_type and keyword list of options 
+  Takes a required report_type and keyword list of options
   report_request("_GET_FLAT_FILE_ORDERS_DATA_",[])
   options must be
   - start_date iso8601
@@ -33,7 +33,7 @@ defmodule MWSClient.Reports do
 
   @doc """
    Lists report requests
-      
+
   see http://docs.developer.amazonservices.com/en_US/reports/Reports_GetReportRequestList.html
   param [Hash] opts
   option opts [<String>, String] :report_request_id_list
@@ -45,11 +45,11 @@ defmodule MWSClient.Reports do
   """
 
   def get_report_request_list(opts \\ []) do
-    white_list = [:report_request_id_list, 
-                  :report_type_list, 
-                  :report_processing_status_list, 
+    white_list = [:report_request_id_list,
+                  :report_type_list,
+                  :report_processing_status_list,
                   :max_count,
-                  :requested_from_date, 
+                  :requested_from_date,
                   :requested_to_date]
     %{"Action" => "GetReportRequestList"}
     |> Utils.add(opts, white_list)
@@ -60,9 +60,9 @@ defmodule MWSClient.Reports do
   end
 
 
-  @doc """ 
+  @doc """
     Lists reports
-    
+
     see http://docs.developer.amazonservices.com/en_US/reports/Reports_GetReportList.html
     param [Hash] opts
     option opts [Integer] :max_count
@@ -85,14 +85,14 @@ defmodule MWSClient.Reports do
     |> Utils.add(opts, white_list)
     |> Utils.restructure("ReportTypeList", "Type")
     |> Utils.restructure("ReportRequestIdList", "Id")
-    |> Utils.to_operation(@version, @path)       
+    |> Utils.to_operation(@version, @path)
   end
 
 
 
   @doc """
    Gets a report and its Content-MD5 header
-  
+
     see http://docs.developer.amazonservices.com/en_US/reports/Reports_GetReport.html
     param [String] report_id
     return [Peddler::XMLParser] if report is in XML format
