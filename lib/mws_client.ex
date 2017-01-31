@@ -14,7 +14,7 @@ defmodule MWSClient do
   def submit_product_feed(data, config = %Config{}, opts \\ [marketplace_id: @default_market,
                                                              purge_and_replace: false]) do
     xml = TemplateBuilder.template_for("submit_product_feed", data)
-    Feed.submit_product_feed(data, opts)
+    Feed.submit_product_feed(xml, opts)
     |> request(config)
   end
 
