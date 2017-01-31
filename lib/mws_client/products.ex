@@ -5,6 +5,13 @@ defmodule MWSClient.Products do
 
   alias MWSClient.Utils
 
+  def list_matching_products(qry, opts \\ [marketplace_id: @default_market]) do
+    %{"Action" => "ListMatchingProducts",
+      "Query" => qry}
+      |> Utils.add(opts, [:marketplace_id])
+      |> Utils.to_operation(@version, @path)
+  end
+
   def get_matching_product(asin_list, opts \\ [marketplace_id: @default_market]) do
     %{"Action" => "GetMatchingProduct",
       "ASINList" => asin_list}

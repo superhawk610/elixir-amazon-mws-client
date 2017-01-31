@@ -1,45 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
-<AmazonEnvelope>
-  <Header>
-    <DocumentVersion>1.01</DocumentVersion>
-    <MerchantIdentifier><%= seller_id %></MerchantIdentifier>
-  </Header>
-  <MessageType>Product</MessageType>
-  <PurgeAndReplace><%= purge_and_replace %></PurgeAndReplace>
-  <Message>
-    <MessageID>1</MessageID>
-    <OperationType>Update</OperationType>
-    <% for product <- @products do %>
-      <Product>
-        <SKU><%= product.sku %></SKU>
-        <StandardProductID>
-          <Type>ASIN</Type>
-          <Value><%= product.asin %></Value>
-        </StandardProductID>
-        <ProductTaxCode><%= product.tax_code %></ProductTaxCode>
-        <DescriptionData>
-          <Title><%= product.title %></Title>
-          <Brand><%= product.brand %></Brand>
-          <Description><%= product.description %></Description>
-          <% for point <- product.bullet_points do %>
-            <BulletPoint>point</BulletPoint>
-            <BulletPoint>point</BulletPoint>
-          <% end %>
-          <MSRP currency="<%= product.currency %>"><%= product.price %></MSRP>
-          <Manufacturer><%= product.manufacturer %></Manufacturer>
-          <ItemType><%= product.item_type %></ItemType>
-        </DescriptionData>
-        <ProductData>
-          <Health>
-            <ProductType>
-              <HealthMisc>
-                <Ingredients>Example Ingredients</Ingredients>
-                <Directions>Example Directions</Directions>
-              </HealthMisc>
-            </ProductType>
-          </Health>
-        </ProductData>
-      </Product>
-    <% end %>
-  </Message>
+<?xml version="1.0" ?>
+<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn- envelope.xsd">
+<Header>
+  <DocumentVersion>1.01</DocumentVersion>
+  <MerchantIdentifier><%= seller_id %></MerchantIdentifier>
+</Header>
+<MessageType>Product</MessageType>
+<PurgeAndReplace><%= purge_and_replace %></PurgeAndReplace>
+<Message>
+  <MessageID>1</MessageID>
+  <OperationType>Update</OperationType>
+  <%= for p <- products do %>
+    <Product>
+      <SKU><%= List.first(p[:skus])%></SKU>
+      <StandardProductID>
+        <Type>ASIN</Type>
+        <Value><%= p[:asin]%></Value>
+      </StandardProductID>
+      <ProductTaxCode><%= p[:tax_code] %></ProductTaxCode>
+      <LaunchDate><%= p[:activeDate]%></LaunchDate>
+      <DescriptionData>
+        <Title><%= p[:title] %></Title>
+        <Description><%= p[:description] %></Description>
+        <%# for t in p[:tags] do %>
+          <SearchTerms><%#= t %></SearchTerms>
+        <%# end %>
+        <MSRP currency="<%= p[:currency] %>"><%= String.to_integer(p[:sale_price]) / 100 %></MSRP>
+<!--    <BulletPoint>made in Italy</BulletPoint>
+        <SearchTerms>eyeglasses</SearchTerms> TAGS
+        <BulletPoint>500 thread count</BulletPoint>
+        <BulletPoint>plain weave (percale)</BulletPoint>
+        <BulletPoint>100% Egyptian cotton</BulletPoint>
+        <Manufacturer>Peacock Alley</Manufacturer>
+        <ItemType>flat-sheets</ItemType>
+        <IsGiftWrapAvailable>false</IsGiftWrapAvailable>
+        <IsGiftMessageAvailable>false</IsGiftMessageAvailable> -->
+      </DescriptionData>
+      <ProductData>
+        <Home>
+          <Parentage>variation-parent</Parentage>
+          <VariationData>
+            <VariationTheme>Size-Color</VariationTheme>
+          </VariationData>
+          <Material>cotton</Material>
+          <ThreadCount>500</ThreadCount>
+        </Home>
+      </ProductData>
+    </Product>
+  <% end %>
+</Message>
 </AmazonEnvelope>
