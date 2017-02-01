@@ -4,7 +4,6 @@ defmodule MWSClient.Feed do
 
   alias MWSClient.Utils
 
-
   def submit_product_feed(data, opts) do
     # TODO: Take a struct in `data` and make an XML from it before sending request
     %{"Action" => "SubmitFeed",
@@ -13,4 +12,10 @@ defmodule MWSClient.Feed do
       |> Utils.to_operation(@version, @path, data, ["Content-MD5": Utils.content_md5(data)])
   end
 
+  def get_feed_submission_result(feed_id, opts \\ [marketplace_id: "ATVPDKIKX0DER"]) do
+    %{"Action" => "GetFeedSubmissionResult",
+      "FeedSubmissionId" => feed_id}
+      |> Utils.add(opts, [:marketplace_id])
+      |> Utils.to_operation(@version, @path, nil, [])
+  end
 end
