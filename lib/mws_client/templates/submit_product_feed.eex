@@ -13,7 +13,7 @@
     <Product>
       <SKU><%= List.first(p[:skus])%></SKU>
       <StandardProductID>
-        <Type>ASIN</Type>
+        <Type>ASIN</Type> <!-- We may have UPC or EAN or ISBN here -->
         <Value><%= p[:asin]%></Value>
       </StandardProductID>
       <ProductTaxCode><%= p[:tax_code] %></ProductTaxCode>
@@ -21,17 +21,16 @@
       <DescriptionData>
         <Title><%= p[:title] %></Title>
         <Description><%= p[:description] %></Description>
-        <%# for t in p[:tags] do %>
-          <SearchTerms><%#= t %></SearchTerms>
-        <%# end %>
+        <%= for t <- p[:tags] do %>
+          <SearchTerms><%= t %></SearchTerms>
+        <% end %>
         <MSRP currency="<%= p[:currency] %>"><%= String.to_integer(p[:sale_price]) / 100 %></MSRP>
+        <ItemType><%= p[:slug] %></ItemType>
 <!--    <BulletPoint>made in Italy</BulletPoint>
-        <SearchTerms>eyeglasses</SearchTerms> TAGS
         <BulletPoint>500 thread count</BulletPoint>
         <BulletPoint>plain weave (percale)</BulletPoint>
         <BulletPoint>100% Egyptian cotton</BulletPoint>
         <Manufacturer>Peacock Alley</Manufacturer>
-        <ItemType>flat-sheets</ItemType>
         <IsGiftWrapAvailable>false</IsGiftWrapAvailable>
         <IsGiftMessageAvailable>false</IsGiftMessageAvailable> -->
       </DescriptionData>
