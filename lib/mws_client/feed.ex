@@ -10,4 +10,13 @@ defmodule MWSClient.Feed do
       |> Utils.add(opts, [:marketplace_id, :purge_and_replace])
       |> Utils.to_operation(@version, @path, data, ["Content-MD5": Utils.content_md5(data)])
   end
+
+
+  def get_feed_submission_result(feed_id, opts \\ [marketplace_id: "ATVPDKIKX0DER"]) do
+    %{"Action" => "GetFeedSubmissionResult",
+      "FeedSubmissionId" => feed_id}
+      |> Utils.add(opts, [:marketplace_id])
+      |> Utils.to_operation(@version, @path, nil, [])
+  end
 end
+

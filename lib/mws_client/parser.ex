@@ -6,7 +6,7 @@ defmodule MWSClient.Parser do
 
   def parse(%{body: body, headers: headers, status_code: status_code}) do
     resp = case get_content_type(headers) do
-      "text/xml" -> XmlToMap.naive_map(body)
+      "text/xml" <> _charset -> XmlToMap.naive_map(body)
       "text/plain;charset=" <> _charset ->
         body |> String.split("\r\n") |> CSV.decode(separator: ?\t, headers: true)
     end
