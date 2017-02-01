@@ -25,8 +25,8 @@
           <SearchTerms><%= t %></SearchTerms>
         <% end %>
         <MSRP currency="<%= p[:currency] %>"><%= String.to_integer(p[:sale_price]) / 100 %></MSRP>
-        <ItemType><%= p[:slug] %></ItemType>
 <!--    <BulletPoint>made in Italy</BulletPoint>
+        <ItemType></ItemType>
         <BulletPoint>500 thread count</BulletPoint>
         <BulletPoint>plain weave (percale)</BulletPoint>
         <BulletPoint>100% Egyptian cotton</BulletPoint>
