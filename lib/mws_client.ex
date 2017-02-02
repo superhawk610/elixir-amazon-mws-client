@@ -23,11 +23,6 @@ defmodule MWSClient do
     |> request(config)
   end
 
-  def get_feed_submission_result(feed_id, config = %Config{}, opts \\ [marketplace_id: @default_market]) do
-    Feed.get_feed_submission_result(feed_id, opts)
-    |> request(config)
-  end
-
   def request(operation = %Operation{}, config = %Config{}) do
     uri = Request.to_uri(operation, config)
 
