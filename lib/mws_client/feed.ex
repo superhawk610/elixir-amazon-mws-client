@@ -19,4 +19,3 @@ defmodule MWSClient.Feed do
       |> Utils.to_operation(@version, @path, nil, [])
   end
 end
-
