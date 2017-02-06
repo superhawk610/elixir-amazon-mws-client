@@ -21,6 +21,16 @@ defmodule MWSClient do
     |> request(config)
   end
 
+  def submit_product_by_asin(data, config = %Config{}, opts \\ [marketplace_id: @default_market,
+                                                             purge_and_replace: false]) do
+    template_opts = [seller_id: config.seller_id, 
+                     purge_and_replace: opts[:purge_and_replace],
+                     sku: data.sku, asin: data.asin]
+    TemplateBuilder.submit_product_by_asin(template_opts)
+    |> Feed.submit_product_feed(opts)
+    |> request(config)
+  end
+
   def submit_price_feed(data, config = %Config{}, opts \\ [marketplace_id: @default_market]) do
     xml = TemplateBuilder.submit_price_feed(data, config)
     Feed.submit_price_feed(xml, opts)
@@ -43,6 +53,11 @@ defmodule MWSClient do
   ### PRODUCTS
   def list_matching_products(query, config = %Config{}, opts \\[marketplace_id: @default_market]) do
     Products.list_matching_products(query, opts)
+    |> request(config)
+  end
+
+  def get_product_by_asin(asin, config = %Config{}, opts \\ [marketplace_id: @default_market]) do
+    Products.get_matching_product(asin, opts)
     |> request(config)
   end
   ###

@@ -7,6 +7,10 @@ defmodule TemplateBuilder do
     EEx.eval_string(Templates.SubmitProductFeed.template_string, data)
   end
 
+  def submit_product_by_asin(list) do
+    EEx.eval_string(Templates.SubmitAsin.template_string, list)
+  end
+
   def submit_price_feed(list, opts) do
     data = [seller_id: opts.seller_id, prices: list]
     EEx.eval_string(Templates.SubmitPriceFeed.template_string, data)

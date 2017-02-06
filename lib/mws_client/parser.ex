@@ -21,11 +21,11 @@ defmodule MWSClient.Parser do
   end
 
   defp wrap_response(status_code, resp) do
-    if status_code in [200, 201] do
-      {:success, resp}
-    else
-      {:error, resp}
+    case status_code do
+      200 -> {:success, resp}
+      404 -> {:warn, resp}
+      400 -> {:warn, resp}
+      _-> {:error, resp}
     end
   end
-
 end
