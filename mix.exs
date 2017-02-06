@@ -24,7 +24,7 @@ defmodule MWSClient.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpoison]]
+    [applications: [:logger, :httpoison, :timex]]
   end
 
   # Dependencies can be Hex packages:
@@ -41,6 +41,8 @@ defmodule MWSClient.Mixfile do
       {:elixir_xml_to_map, github: "retgoat/elixir-xml-to-map", tag: "0.1.2"},
       {:httpoison, "~> 0.11.0"},
       {:inflex, "~> 1.7.0" }, #camelize
+      {:html_sanitize_ex, "~> 1.0.0"},
+      {:timex, "~> 3.0"},
       {:ex_doc, "~> 0.10", only: :dev},
       {:exsync, "~> 0.1", only: :dev}
     ]
