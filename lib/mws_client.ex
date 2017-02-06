@@ -5,6 +5,7 @@ defmodule MWSClient do
   alias MWSClient.Config
   alias MWSClient.Operation
   alias MWSClient.Request
+  alias MWSClient.Products
   alias MWSClient.Feed
 
   @default_market "ATVPDKIKX0DER"
@@ -39,6 +40,13 @@ defmodule MWSClient do
 
   ### FEEDS
 
+  ### PRODUCTS
+  def list_matching_products(query, config = %Config{}, opts \\[marketplace_id: @default_market]) do
+    Products.list_matching_products(query, opts)
+    |> request(config)
+  end
+  ###
+
   def request(operation = %Operation{}, config = %Config{}) do
     uri = Request.to_uri(operation, config)
 
@@ -53,7 +61,7 @@ defmodule MWSClient do
   defp parse_response({status, response}) do
     case {status, response} do
       {:ok, resp} -> MWSClient.Parser.parse(resp)
-      {:error, err} -> raise RequestError, message: inspect(err)
+      {:error, err} -> raise MWSClient.RequestError, message: inspect(err)
     end
   end
 end
