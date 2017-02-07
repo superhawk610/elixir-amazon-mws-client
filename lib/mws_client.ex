@@ -7,8 +7,10 @@ defmodule MWSClient do
   alias MWSClient.Request
   alias MWSClient.Products
   alias MWSClient.Feed
+  alias MWSClient.Subscriptions
+  alias MWSClient.Orders
 
-  @default_market "ATVPDKIKX0DER"
+  @default_opts [marketplace_id: "ATVPDKIKX0DER"]
 
   # TODO: make wrappers for all calls here
 
@@ -23,7 +25,7 @@ defmodule MWSClient do
 
   def submit_product_by_asin(data, config = %Config{}, opts \\ [marketplace_id: @default_market,
                                                              purge_and_replace: false]) do
-    template_opts = [seller_id: config.seller_id, 
+    template_opts = [seller_id: config.seller_id,
                      purge_and_replace: opts[:purge_and_replace],
                      sku: data.sku, asin: data.asin]
     TemplateBuilder.submit_product_by_asin(template_opts)
@@ -31,19 +33,19 @@ defmodule MWSClient do
     |> request(config)
   end
 
-  def submit_price_feed(data, config = %Config{}, opts \\ [marketplace_id: @default_market]) do
+  def submit_price_feed(data, config = %Config{}, opts \\ @default_opts) do
     xml = TemplateBuilder.submit_price_feed(data, config)
     Feed.submit_price_feed(xml, opts)
     |> request(config)
   end
 
-  def submit_inventory_feed(data, config = %Config{}, opts \\ [marketplace_id: @default_market]) do
+  def submit_inventory_feed(data, config = %Config{}, opts \\ @default_opts) do
     xml = TemplateBuilder.submit_inventory_feed(data, config)
     Feed.submit_inventory_feed(xml, opts)
     |> request(config)
   end
 
-  def get_feed_submission_result(feed_id, config = %Config{}, opts \\ [marketplace_id: @default_market]) do
+  def get_feed_submission_result(feed_id, config = %Config{}, opts \\ @default_opts) do
     Feed.get_feed_submission_result(feed_id, opts)
     |> request(config)
   end
@@ -51,16 +53,30 @@ defmodule MWSClient do
   ### FEEDS
 
   ### PRODUCTS
-  def list_matching_products(query, config = %Config{}, opts \\[marketplace_id: @default_market]) do
+  def list_matching_products(query, config = %Config{}, opts \\@default_opts) do
     Products.list_matching_products(query, opts)
     |> request(config)
   end
 
-  def get_product_by_asin(asin, config = %Config{}, opts \\ [marketplace_id: @default_market]) do
+  def get_product_by_asin(asin, config = %Config{}, opts \\ @default_opts) do
     Products.get_matching_product(asin, opts)
     |> request(config)
   end
   ###
+
+  ### SUBSCRIPTIONS
+  def subscribe_to_sqs(url, config = %Config{}, opts \\ @default_opts) do
+    Subscriptions.register_destination(url, opts)
+    |> request(config)
+  end
+  ### SUBSCRIPTIONS
+
+  ### ORDERS
+    def list_orders(params, config = %Config{}, opts \\ [marketplace_id: [@default_market]]) do
+      Orders.list_orders(params, opts)
+      |> request(config)
+    end
+  ### ORDERS
 
   def request(operation = %Operation{}, config = %Config{}) do
     uri = Request.to_uri(operation, config)
