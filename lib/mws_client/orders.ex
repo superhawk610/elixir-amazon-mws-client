@@ -36,11 +36,11 @@ defmodule MWSClient.Orders do
     |> Utils.to_operation(@version, @path)
   end
 
-  def list_order_items(order_id) do
+  def list_order_items(_order_id) do
     raise "Not implemented"
   end
 
-  def get_order(order_id) do
+  def get_order(_order_id) do
     raise "Not implemented"
   end
 end

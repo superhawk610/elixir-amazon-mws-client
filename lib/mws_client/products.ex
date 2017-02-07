@@ -28,4 +28,11 @@ defmodule MWSClient.Products do
       |> Utils.restructure("IdList", "Id")
       |> Utils.to_operation(@version, @path)
   end
+
+  def get_product_categories_for_asin(asin, opts) do
+    %{"Action" => "GetProductCategoriesForASIN",
+      "ASIN" => asin}
+    |> Utils.add(opts, [:marketplace_id])
+    |> Utils.to_operation(@version, @path)
+  end
 end

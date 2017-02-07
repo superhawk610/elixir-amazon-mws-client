@@ -53,6 +53,7 @@ defmodule MWSClient do
   ### FEEDS
 
   ### PRODUCTS
+
   def list_matching_products(query, config = %Config{}, opts \\@default_opts) do
     Products.list_matching_products(query, opts)
     |> request(config)
@@ -62,7 +63,13 @@ defmodule MWSClient do
     Products.get_matching_product(asin, opts)
     |> request(config)
   end
-  ###
+
+  def get_product_categories_for_asin(asin, config = %Config{}, opts \\ @default_opts) do
+    Products.get_product_categories_for_asin(asin, opts)
+    |> request(config)
+  end
+
+  ### PRODUCTS
 
   ### SUBSCRIPTIONS
   def subscribe_to_sqs(url, config = %Config{}, opts \\ @default_opts) do
