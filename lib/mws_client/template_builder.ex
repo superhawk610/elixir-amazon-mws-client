@@ -24,4 +24,8 @@ defmodule TemplateBuilder do
   def books_category(list) do
     EEx.eval_string(Templates.Categories.Books.template_string, list)
   end
+
+  def common_category(_list) do
+    ""
+  end
 end

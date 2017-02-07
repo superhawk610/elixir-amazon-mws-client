@@ -9,7 +9,9 @@ defmodule MWSClient.Mixfile do
      start_permanent: Mix.env == :prod,
      description: "An Amazon MWS API client in Elixir",
      package: package(),
-     deps: deps()]
+     deps: deps(),
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: ["coveralls.html": :test, "coveralls": :test]]
   end
 
   defp package do
@@ -44,7 +46,8 @@ defmodule MWSClient.Mixfile do
       {:html_sanitize_ex, "~> 1.0.0"},
       {:timex, "~> 3.0"},
       {:ex_doc, "~> 0.10", only: :dev},
-      {:exsync, "~> 0.1", only: :dev}
+      {:exsync, "~> 0.1", only: :dev},
+      {:excoveralls, "~> 0.5", only: :test}
     ]
   end
 end

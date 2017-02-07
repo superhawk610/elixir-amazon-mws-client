@@ -12,7 +12,7 @@ defmodule MWSClient.Orders do
   # default_market should be specified as List
   @default_market ["ATVPDKIKX0DER"]
 
-  @prms [fulfillment_channel: [], payment_method: [], order_status: [],
+  @prms [fulfillment_channel: [], payment_method: [],
          order_status: [], buyer_email: nil, seller_order_id: nil]
 
   # `last_updated_after' is a string that should be formatted like: "%Y-%m-%dT%H:%M:%SZ"

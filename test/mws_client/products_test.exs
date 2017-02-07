@@ -33,4 +33,14 @@ defmodule MWSClient.ProductsTest do
     assert res == expect
   end
 
+  test "get_product_categories_for_asin returns a struct" do
+    res = Products.get_product_categories_for_asin("ASIN")
+    exp = %MWSClient.Operation{body: nil, headers: [], method: "POST",
+                               params: %{"ASIN" => "ASIN",
+                                 "Action" => "GetProductCategoriesForASIN",
+                                 "MarketplaceId" => "ATVPDKIKX0DER", "Version" => "2011-10-01"},
+                               path: "/Products/2011-10-01", timestamp: nil}
+    assert res == exp
+  end
+
 end
