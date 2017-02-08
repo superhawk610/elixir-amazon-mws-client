@@ -2,7 +2,6 @@ defmodule FeedTest do
   use ExUnit.Case
 
   alias MWSClient.Feed
-  alias MWSClient.Operation
 
   test "should generate submit_product_feed" do
     res = Feed.submit_product_feed("foo", [marketplace_id: "bar"])

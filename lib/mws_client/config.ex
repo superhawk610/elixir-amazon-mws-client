@@ -22,7 +22,7 @@ defmodule MWSClient.Config do
       "SignatureMethod" => struct.signature_method,
       "SignatureVersion" => struct.signature_version,
     }
-    |> Enum.reject(fn({k, v}) -> v == nil end)
+    |> Enum.reject(fn({_k, v}) -> v == nil end)
     |> Enum.into(%{})
   end
 
