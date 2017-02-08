@@ -15,7 +15,7 @@ defmodule MWSClient do
   # TODO: make wrappers for all calls here
 
   ### FEEDS
-  def submit_product_feed(data, config = %Config{}, opts \\ [marketplace_id: @default_market,
+  def submit_product_feed(data, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
                                                              purge_and_replace: false]) do
     template_opts = %{seller_id: config.seller_id, purge_and_replace: opts[:purge_and_replace]}
     xml = TemplateBuilder.submit_product_feed(data, template_opts)
@@ -23,7 +23,7 @@ defmodule MWSClient do
     |> request(config)
   end
 
-  def submit_product_by_asin(data, config = %Config{}, opts \\ [marketplace_id: @default_market,
+  def submit_product_by_asin(data, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
                                                              purge_and_replace: false]) do
     template_opts = [seller_id: config.seller_id,
                      purge_and_replace: opts[:purge_and_replace],
@@ -79,10 +79,20 @@ defmodule MWSClient do
   ### SUBSCRIPTIONS
 
   ### ORDERS
-    def list_orders(params, config = %Config{}, opts \\ [marketplace_id: [@default_market]]) do
-      Orders.list_orders(params, opts)
-      |> request(config)
-    end
+  @default_prms [fulfillment_channel: [], payment_method: [],
+                  order_status: [], buyer_email: nil, seller_order_id: nil]
+
+  # `last_updated_after' is a string that should be formatted like: "%Y-%m-%dT%H:%M:%SZ"
+  @dafeult_last_updated_after  Timex.beginning_of_month(DateTime.utc_now)
+                               |> Timex.format("%Y-%m-%dT%H:%M:%SZ", :strftime)
+                               |> elem(1)
+
+  def list_orders(params \\ @default_prms,
+                  last_updated_after \\ @dafeult_last_updated_after,
+                  config = %Config{}, opts \\ [marketplace_id: ["ATVPDKIKX0DER"]]) do
+    Orders.list_orders(params, last_updated_after, opts)
+    |> request(config)
+  end
   ### ORDERS
 
   def request(operation = %Operation{}, config = %Config{}) do
