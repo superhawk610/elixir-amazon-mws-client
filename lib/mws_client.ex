@@ -76,6 +76,11 @@ defmodule MWSClient do
     Subscriptions.register_destination(url, opts)
     |> request(config)
   end
+
+  def unsubscribe_from_sqs(url, config = %Config{}, opts \\ @default_opts) do
+    Subscriptions.deregister_destination(url, opts)
+    |> request(config)
+  end
   ### SUBSCRIPTIONS
 
   ### ORDERS
