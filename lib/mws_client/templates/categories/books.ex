@@ -5,8 +5,8 @@ defmodule Templates.Categories.Books do
       <ProductType>
         <BooksMisc>
           <Author><%= author %></Author>
-          <Binding><%= type %></Binding>
-          <Language><%= lang %></Language>
+          <Binding><%= bindingtypes %></Binding>
+          <Language><%= language %></Language>
         </BooksMisc>
       </ProductType>
     </Books>

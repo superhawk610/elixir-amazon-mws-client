@@ -12,8 +12,8 @@ defmodule Templates.SubmitPriceFeed do
         <MessageID>1</MessageID>
         <%= for p <- prices do %>
           <Price>
-            <SKU><%= p[:sku] %></SKU>
-            <StandardPrice currency="<%= p[:price]["currency"] %>"><%= p[:price]["value"] / 100 %></StandardPrice>
+            <SKU><%= p[:code] %></SKU>
+            <StandardPrice currency="<%= p[:retailprice]["currency"] %>"><%= p[:retailprice]["value"] / 100 %></StandardPrice>
           </Price>
         <% end %>
       </Message>

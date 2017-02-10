@@ -1,4 +1,5 @@
 defmodule Templates.SubmitProductFeed do
+  use Timex
   def template_string do
     """
     <?xml version="1.0" ?>
@@ -14,13 +15,13 @@ defmodule Templates.SubmitProductFeed do
       <OperationType>Update</OperationType>
       <%= for p <- products do %>
         <Product>
-          <SKU><%= p[:sku]%></SKU>
+          <SKU><%= p[:code]%></SKU>
           <StandardProductID>
             <Type>ISBN</Type> <!-- We may have UPC or EAN or ISBN here -->
-            <Value><%= p[:asin]%></Value>
+            <Value><%= p[:isbn]%></Value>
           </StandardProductID>
           <ProductTaxCode><%= p[:tax_code] %></ProductTaxCode>
-          <LaunchDate><%= Timex.format(p[:launch_date], "%Y-%m-%dT%H:%M:%S+00:00", :strftime) |> elem(1) %></LaunchDate>
+          <LaunchDate><%= Templates.SubmitProductFeed.format_date_time(p[:activefrom]) %></LaunchDate>
           <DescriptionData>
             <Title><%= p[:title] %></Title>
             <Description><%= HtmlSanitizeEx.strip_tags(p[:description]) %></Description>
@@ -48,5 +49,10 @@ defmodule Templates.SubmitProductFeed do
     </Message>
     </AmazonEnvelope>
     """
+  end
+
+  def format_date_time(dt_str) do
+    {:ok, dt} = Timex.Parse.DateTime.Parser.parse(dt_str, "{ISO:Extended:Z}")
+    Timex.format(dt, "%Y-%m-%dT%H:%M:%S+00:00", :strftime) |> elem(1)
   end
 end

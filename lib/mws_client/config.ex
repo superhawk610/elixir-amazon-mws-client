@@ -25,6 +25,4 @@ defmodule MWSClient.Config do
     |> Enum.reject(fn({_k, v}) -> v == nil end)
     |> Enum.into(%{})
   end
-
-
 end
