@@ -23,8 +23,7 @@ defmodule MWSClient.Parser do
   defp wrap_response(status_code, resp) do
     case status_code do
       200 -> {:success, resp}
-      404 -> {:warn, resp}
-      400 -> {:warn, resp}
+      c when c in [404, 400] -> {:warn, resp}
       _-> {:error, resp}
     end
   end
