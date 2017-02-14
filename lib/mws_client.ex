@@ -80,12 +80,12 @@ defmodule MWSClient do
                   order_status: [], buyer_email: nil, seller_order_id: nil]
 
   # `last_updated_after' is a string that should be formatted like: "%Y-%m-%dT%H:%M:%SZ"
-  @dafeult_last_updated_after  Timex.beginning_of_month(DateTime.utc_now)
+  @dafault_last_updated_after  Timex.beginning_of_month(DateTime.utc_now)
                                |> Timex.format("%Y-%m-%dT%H:%M:%SZ", :strftime)
                                |> elem(1)
 
   def list_orders(params \\ @default_prms,
-                  last_updated_after \\ @dafeult_last_updated_after,
+                  last_updated_after \\ @dafault_last_updated_after,
                   config = %Config{}, opts \\ [marketplace_id: ["ATVPDKIKX0DER"]]) do
     Orders.list_orders(params, last_updated_after, opts)
     |> request(config)
