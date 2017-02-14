@@ -47,7 +47,8 @@ defmodule MWSClient.Mixfile do
       {:timex, "~> 3.0"},
       {:ex_doc, "~> 0.10", only: :dev},
       {:exsync, "~> 0.1", only: :dev},
-      {:excoveralls, "~> 0.5", only: :test}
+      {:excoveralls, "~> 0.5", only: :test},
+      {:erlsom, "~> 1.4"}
     ]
   end
 end

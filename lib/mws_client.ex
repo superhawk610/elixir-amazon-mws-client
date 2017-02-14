@@ -15,32 +15,24 @@ defmodule MWSClient do
   # TODO: make wrappers for all calls here
 
   ### FEEDS
-  def submit_product_feed(data, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
+  def submit_product_feed(xml, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
                                                              purge_and_replace: false]) do
-    template_opts = %{seller_id: config.seller_id, purge_and_replace: opts[:purge_and_replace]}
-    xml = TemplateBuilder.submit_product_feed(data, template_opts)
     Feed.submit_product_feed(xml, opts)
     |> request(config)
   end
 
-  def submit_product_by_asin(data, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
+  def submit_product_by_asin(xml, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
                                                              purge_and_replace: false]) do
-    template_opts = [seller_id: config.seller_id,
-                     purge_and_replace: opts[:purge_and_replace],
-                     sku: data.sku, asin: data.asin]
-    TemplateBuilder.submit_product_by_asin(template_opts)
-    |> Feed.submit_product_feed(opts)
+    Feed.submit_product_feed(xml, opts)
     |> request(config)
   end
 
-  def submit_price_feed(data, config = %Config{}, opts \\ @default_opts) do
-    xml = TemplateBuilder.submit_price_feed(data, config)
+  def submit_price_feed(xml, config = %Config{}, opts \\ @default_opts) do
     Feed.submit_price_feed(xml, opts)
     |> request(config)
   end
 
-  def submit_inventory_feed(data, config = %Config{}, opts \\ @default_opts) do
-    xml = TemplateBuilder.submit_inventory_feed(data, config)
+  def submit_inventory_feed(xml, config = %Config{}, opts \\ @default_opts) do
     Feed.submit_inventory_feed(xml, opts)
     |> request(config)
   end
