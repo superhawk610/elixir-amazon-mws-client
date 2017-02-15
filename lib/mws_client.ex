@@ -37,6 +37,11 @@ defmodule MWSClient do
     |> request(config)
   end
 
+  def submit_images_feed(xml, config = %Config{}, opts \\ @default_opts) do
+    Feed.submit_images_feed(xml, opts)
+    |> request(config)
+  end
+
   def get_feed_submission_result(feed_id, config = %Config{}, opts \\ @default_opts) do
     Feed.get_feed_submission_result(feed_id, opts)
     |> request(config)

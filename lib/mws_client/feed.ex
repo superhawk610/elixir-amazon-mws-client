@@ -26,6 +26,13 @@ defmodule MWSClient.Feed do
       |> Utils.to_operation(@version, @path, data, ["Content-MD5": Utils.content_md5(data)])
   end
 
+  def submit_images_feed(data, opts \\ @opts) do
+    %{"Action" => "SubmitFeed",
+      "FeedType" => "_POST_PRODUCT_IMAGE_DATA_"}
+      |> Utils.add(opts, [:marketplace_id])
+      |> Utils.to_operation(@version, @path, data, ["Content-MD5": Utils.content_md5(data)])
+  end
+
   def get_feed_submission_result(feed_id, opts \\ @opts) do
     %{"Action" => "GetFeedSubmissionResult",
       "FeedSubmissionId" => feed_id}
