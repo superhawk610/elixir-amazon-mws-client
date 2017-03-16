@@ -17,4 +17,21 @@ defmodule MWSClient.OrdersTest do
     assert res == exp
   end
 
+  test "list_order_items should return a struct" do
+    res = Orders.list_order_items("123", [marketplace_id: ["ATVPDKIKX0DER"]])
+    exp = %MWSClient.Operation{body: nil, headers: [], method: "POST",
+          params: %{"Action" => "ListOrderItems", "AmazonOrderId" => "123",
+                    "MarketplaceId" => ["ATVPDKIKX0DER"], "Version" => "2013-09-01"},
+          path: "/Orders/2013-09-01", timestamp: nil}
+    assert res == exp
+  end
+
+  test "get_order should return a struct" do
+    res = Orders.get_order(["123"], [marketplace_id: ["ATVPDKIKX0DER"]])
+    exp = %MWSClient.Operation{body: nil, headers: [], method: "POST",
+          params: %{"Action" => "GetOrder", "AmazonOrderId.Id.1" => "123",
+                    "MarketplaceId" => ["ATVPDKIKX0DER"], "Version" => "2013-09-01"},
+          path: "/Orders/2013-09-01", timestamp: nil}
+    assert res == exp
+  end
 end

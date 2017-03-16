@@ -24,11 +24,18 @@ defmodule MWSClient.Orders do
     |> Utils.to_operation(@version, @path)
   end
 
-  def list_order_items(_order_id) do
-    raise "Not implemented"
+  def list_order_items(order_id, opts) do
+    %{"Action" => "ListOrderItems",
+      "AmazonOrderId" => order_id}
+    |> Utils.add(opts, [:marketplace_id])
+    |> Utils.to_operation(@version, @path)
   end
 
-  def get_order(_order_id) do
-    raise "Not implemented"
+  def get_order(order_id, opts) do
+    %{"Action" => "GetOrder",
+      "AmazonOrderId" => order_id}
+    |> Utils.add(opts, [:marketplace_id])
+    |> Utils.restructure("AmazonOrderId", "Id")
+    |> Utils.to_operation(@version, @path)
   end
 end

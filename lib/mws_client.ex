@@ -95,6 +95,16 @@ defmodule MWSClient do
     Orders.list_orders(params, last_updated_after, opts)
     |> request(config)
   end
+
+  def list_order_items(order_id, config = %Config{}, opts \\ @default_opts) do
+    Orders.list_order_items(order_id, opts)
+    |> request(config)
+  end
+
+  def get_order(order_id, config = %Config{}, opts \\ @default_opts) do
+    Orders.get_order(order_id, opts)
+    |> request(config)
+  end
   ### ORDERS
 
   def request(operation = %Operation{}, config = %Config{}) do
