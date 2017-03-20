@@ -12,8 +12,6 @@ defmodule MWSClient do
 
   @default_opts [marketplace_id: "ATVPDKIKX0DER"]
 
-  # TODO: make wrappers for all calls here
-
   ### FEEDS
   def submit_product_feed(xml, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
                                                              purge_and_replace: false]) do
@@ -46,11 +44,9 @@ defmodule MWSClient do
     Feed.get_feed_submission_result(feed_id, opts)
     |> request(config)
   end
-
   ### FEEDS
 
   ### PRODUCTS
-
   def list_matching_products(query, config = %Config{}, opts \\@default_opts) do
     Products.list_matching_products(query, opts)
     |> request(config)
@@ -65,7 +61,6 @@ defmodule MWSClient do
     Products.get_product_categories_for_asin(asin, opts)
     |> request(config)
   end
-
   ### PRODUCTS
 
   ### SUBSCRIPTIONS
@@ -81,18 +76,8 @@ defmodule MWSClient do
   ### SUBSCRIPTIONS
 
   ### ORDERS
-  @default_prms [fulfillment_channel: [], payment_method: [],
-                  order_status: [], buyer_email: nil, seller_order_id: nil]
-
-  # `last_updated_after' is a string that should be formatted like: "%Y-%m-%dT%H:%M:%SZ"
-  @dafault_last_updated_after  Timex.beginning_of_month(DateTime.utc_now)
-                               |> Timex.format("%Y-%m-%dT%H:%M:%SZ", :strftime)
-                               |> elem(1)
-
-  def list_orders(params \\ @default_prms,
-                  last_updated_after \\ @dafault_last_updated_after,
-                  config = %Config{}, opts \\ [marketplace_id: ["ATVPDKIKX0DER"]]) do
-    Orders.list_orders(params, last_updated_after, opts)
+  def list_orders(params, config = %Config{}, opts \\ @default_opts) do
+    Orders.list_orders(params, opts)
     |> request(config)
   end
 

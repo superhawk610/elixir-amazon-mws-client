@@ -20,9 +20,7 @@ defmodule MWSClient.Parser do
     end
   end
 
-  @doc """
-  Amazon's 404 and 400 is actually an API errors not HTTP
-  """
+  # Amazon's 404 and 400 is actually an API errors not HTTP
   defp wrap_response(status_code, resp) do
     case status_code do
       200 -> {:success, resp}

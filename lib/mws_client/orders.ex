@@ -10,12 +10,12 @@ defmodule MWSClient.Orders do
   @version "2013-09-01"
   @path "/Orders/#{@version}"
 
-  def list_orders(params, last_updated_after, opts) do
+  def list_orders(params, opts) do
 
-    %{"Action" => "ListOrders",
-      "LastUpdatedAfter" => last_updated_after}
-    |> Utils.add(params, [:fulfillment_channel, :payment_method, :order_status,
-                          :last_updated_after, :buyer_email, :seller_order_id])
+    %{"Action" => "ListOrders"}
+    |> Utils.add(params, [:created_after, :created_before, :last_updated_after, :last_updated_before,
+                          :order_status, :fulfillment_channel, :payment_method, :buyer_email,
+                          :seller_order_id, :max_results_per_page, :tfm_shipment_status])
     |> Utils.add(opts, [:marketplace_id])
     |> Utils.restructure("MarketplaceId", "Id")
     |> Utils.restructure("FulfillmentChannel", "Channel")
