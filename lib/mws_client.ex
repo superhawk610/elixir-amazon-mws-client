@@ -86,7 +86,7 @@ defmodule MWSClient do
     |> request(config)
   end
 
-  def get_order(order_id, config = %Config{}, opts \\ @default_opts) do
+  def get_order(order_id, config = %Config{}, opts \\ [marketplace_id: ["ATVPDKIKX0DER"]]) do
     Orders.get_order(order_id, opts)
     |> request(config)
   end
