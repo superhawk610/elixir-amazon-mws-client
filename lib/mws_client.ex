@@ -19,6 +19,11 @@ defmodule MWSClient do
     |> request(config)
   end
 
+  def submit_variation_feed(xml, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER"]) do
+    Feed.submit_variation_feed(xml, opts)
+    |> request(config)
+  end
+
   def submit_product_by_asin(xml, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
                                                              purge_and_replace: false]) do
     Feed.submit_product_feed(xml, opts)
