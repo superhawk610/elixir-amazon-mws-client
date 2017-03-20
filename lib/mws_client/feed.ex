@@ -12,6 +12,13 @@ defmodule MWSClient.Feed do
       |> Utils.to_operation(@version, @path, data, ["Content-MD5": Utils.content_md5(data)])
   end
 
+  def submit_variation_feed(data, opts \\ @opts) do
+    %{"Action" => "SubmitFeed",
+      "FeedType" => "_POST_PRODUCT_RELATIONSHIP_DATA_"}
+      |> Utils.add(opts, [:marketplace_id])
+      |> Utils.to_operation(@version, @path, data, ["Content-MD5": Utils.content_md5(data)])
+  end
+
   def submit_price_feed(data, opts \\ @opts) do
     %{"Action" => "SubmitFeed",
       "FeedType" => "_POST_PRODUCT_PRICING_DATA_"}

@@ -15,6 +15,18 @@ defmodule FeedTest do
     assert res == exp
   end
 
+  test "should generate submit_variation_feed" do
+    res = Feed.submit_variation_feed("foo", [marketplace_id: "bar"])
+    exp = %MWSClient.Operation{body: "foo",
+                               headers: ["Content-MD5": "rL0Y20zC+Fzt72VPzMSk2A=="],
+                               method: "POST",
+                               params: %{"Action" => "SubmitFeed",
+                                 "FeedType" => "_POST_PRODUCT_RELATIONSHIP_DATA_",
+                                 "MarketplaceId" => "bar", "Version" => "2009-01-01"},
+                               path: "/Feeds/2009-01-01", timestamp: nil}
+    assert res == exp
+  end
+
   test "should generate submit_price_feed" do
     res = Feed.submit_price_feed("foo", [marketplace_id: "bar"])
     exp = %MWSClient.Operation{body: "foo",
