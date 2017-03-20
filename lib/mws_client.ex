@@ -76,7 +76,7 @@ defmodule MWSClient do
   ### SUBSCRIPTIONS
 
   ### ORDERS
-  def list_orders(params, config = %Config{}, opts \\ @default_opts) do
+  def list_orders(params, config = %Config{}, opts \\ [marketplace_id: ["ATVPDKIKX0DER"]]) do
     Orders.list_orders(params, opts)
     |> request(config)
   end
@@ -86,7 +86,7 @@ defmodule MWSClient do
     |> request(config)
   end
 
-  def get_order(order_id, config = %Config{}, opts \\ [marketplace_id: ["ATVPDKIKX0DER"]]) do
+  def get_order(order_id, config = %Config{}, opts \\ @default_opts) do
     Orders.get_order(order_id, opts)
     |> request(config)
   end
