@@ -66,6 +66,11 @@ defmodule MWSClient do
     Products.get_product_categories_for_asin(asin, opts)
     |> request(config)
   end
+
+  def get_matching_product_for_id(id, id_list, config = %Config{}, opts \\ @default_opts) do
+    Products.get_matching_product_for_id(id, id_list)
+    |> request(config)
+  end
   ### PRODUCTS
 
   ### SUBSCRIPTIONS
