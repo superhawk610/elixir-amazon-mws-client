@@ -9,6 +9,7 @@ defmodule MWSClient do
   alias MWSClient.Feed
   alias MWSClient.Subscriptions
   alias MWSClient.Orders
+  alias MWSClient.Reports
 
   @default_opts [marketplace_id: "ATVPDKIKX0DER"]
 
@@ -68,7 +69,7 @@ defmodule MWSClient do
   end
 
   def get_matching_product_for_id(id, id_list, config = %Config{}, opts \\ @default_opts) do
-    Products.get_matching_product_for_id(id, id_list)
+    Products.get_matching_product_for_id(id, id_list, opts)
     |> request(config)
   end
   ### PRODUCTS
@@ -101,6 +102,29 @@ defmodule MWSClient do
     |> request(config)
   end
   ### ORDERS
+
+  ### REPORTS
+  def request_report(report_type, config = %Config{}, opts \\ [marketplace_id_list: ["ATVPDKIKX0DER"]]) do
+    Reports.request_report(report_type, opts)
+    |> request(config)
+  end
+
+  def get_report_request_list(config = %Config{}, opts) do
+    Reports.get_report_request_list(opts)
+    |> request(config)
+  end
+
+  def get_report_list(config = %Config{}, opts) do
+    Reports.get_report_list(opts)
+    |> request(config)
+  end
+
+  def get_report(report_id, config = %Config{}) do
+    Reports.get_report(report_id)
+    |> request(config)
+  end
+  ### REPORTS
+
 
   def request(operation = %Operation{}, config = %Config{}) do
     uri = Request.to_uri(operation, config)
