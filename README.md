@@ -11,9 +11,9 @@ Create `%Config` struct.
 config = %MWSClient.Config{aws_access_key_id: "SomeKey", seller_id: "SellerId", aws_secret_access_key: "SecretKey"}
 ```
 
-###Functions
+### Functions
 
-####submit\_product\_feed
+#### submit\_product\_feed
 
 ```elixir
 products = [[activefrom: "2017-02-03T05:31:52.066Z",
@@ -34,7 +34,7 @@ MWSClient.submit_product_feed(products, cfg)
          "SubmittedDate" => "2017-02-10T11:51:58+00:00"}}}}}
 ```
 
-####submin_proice_feed
+#### submin_proice_feed
 
 ```elixir
 
@@ -49,7 +49,7 @@ MWSClient.submit_price_feed(prices, cfg)
          "SubmittedDate" => "2017-02-10T11:53:35+00:00"}}}}}
 ```
 
-####submit\_inventory\_feed
+#### submit\_inventory\_feed
 
 ```elixir
 inventory = [[sku: "AMZ2331", quantity: 10]]
@@ -64,7 +64,7 @@ MWSClient.submit_inventory_feed(inventory, cfg)
 
 ```
 
-####get\_feed\_submission\_result
+#### get\_feed\_submission\_result
 
 ```elixir
 iex(7)> MWSClient.get_feed_submission_result("50071017207", cfg)
@@ -88,7 +88,7 @@ iex(7)> MWSClient.get_feed_submission_result("50071017207", cfg)
      "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation" => "amzn-envelope.xsd"}}}
 ```
 
-####list\_matching\_products
+#### list\_matching\_products
 
 ```elixir
 MWSClient.list_matching_products("Apple iphone 6S 256Gb", cfg)
@@ -97,7 +97,7 @@ MWSClient.list_matching_products("Apple iphone 6S 256Gb", cfg)
                 "Brand" => "Apple", "Color" => "Black", "DisplaySize" => "5.50", ....
 ```     
 
-####get\_product\_by\_asin
+#### get\_product\_by\_asin
 
 ```elixir
 iex(10)> MWSClient.get_product_by_asin(["B01LYT95XR"], cfg)
@@ -106,7 +106,7 @@ iex(10)> MWSClient.get_product_by_asin(["B01LYT95XR"], cfg)
        "Product" => %{"AttributeSets" => %{"ItemAttributes" => %{"Binding" => "Wireless Phone Accessory", ...
 ```
 
-####get\_producst\_categories\_for\_asin
+#### get\_producst\_categories\_for\_asin
 
 ```elixir
 MWSClient.get_product_categories_for_asin("B01LYT95XR", cfg)
@@ -122,7 +122,7 @@ MWSClient.get_product_categories_for_asin("B01LYT95XR", cfg)
      "ResponseMetadata" => %{"RequestId" => "709429ea-c4c5-40ae-9149-bd96040bacfd"}}}}
 ```
 
-####subscribe\_to\_sqs
+#### subscribe\_to\_sqs
 
 ```elixir
  MWSClient.subscribe_to_sqs("aws_sqs_queue_url", cfg)
@@ -130,7 +130,7 @@ MWSClient.get_product_categories_for_asin("B01LYT95XR", cfg)
  %{"RegisterDestinationResponse" => %{"RegisterDestinationResult" => %{},
      "ResponseMetadata" => %{"RequestId" => "76b2145c-6083-4157-8be2-6e330b923ca1"}}}}
 ```
-####unsubscribe\_from\_sqs
+#### unsubscribe\_from\_sqs
 
 ```elixir
 MWSClient.unsubscribe_from_sqs("aws_sqs_queue_url", cfg)
@@ -139,7 +139,7 @@ MWSClient.unsubscribe_from_sqs("aws_sqs_queue_url", cfg)
      "ResponseMetadata" => %{"RequestId" => "bb9e88ad-b3bb-4267-a42f-7d29400fbef0"}}}}
 ```
 
-####list_orders
+#### list_orders
 
 For available params check this [file](https://github.com/FoxComm/elixir-amazon-mws-client/blob/master/lib/mws_client.ex)
 
@@ -157,19 +157,23 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
   1. Add `mws_client` to your list of dependencies in `mix.exs`:
 
-    ```elixir
-    def deps do
-      [{:mws_client, "~> 0.0.1"}]
-    end
-    ```
+ ```elixir
+    
+ def deps do
+   [{:mws_client, "~> 0.0.1"}]
+ end
+    
+ ```
 
   2. Ensure `mws_client` is started before your application:
 
-    ```elixir
-    def application do
-      [applications: [:mws_client]]
-    end
-    ```
+ ```elixir
+    
+ def application do
+   [applications: [:mws_client]]
+ end
+    
+ ```
 
 ## Useful info
 
