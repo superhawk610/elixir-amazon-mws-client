@@ -16,13 +16,7 @@ config = %MWSClient.Config{aws_access_key_id: "SomeKey", seller_id: "SellerId", 
 #### submit\_product\_feed
 
 ```elixir
-products = [[activefrom: "2017-02-03T05:31:52.066Z",
-  description: "<p>Bolshinstvo knig po strukturam dannykh predpolagaiut ispolzovanie imperativnogo iazyka programmirovaniia, naprimer, S/S++ ili Java. Odnako realizatcii struktur dannykh na takikh iazykakh daleko ne vsegda khorosho perenosiatsia na funktcionalnye iazyki programmirovaniia, takie kak Standartnyi ML, Haskell ili Scheme. V etoi knige struktury dannykh opisyvaiutsia s tochki zreniia funktcionalnykh iazykov, v nei soderzhatsia primery i predlagaiutsia podkhody k proektirovaniiu, kotorye mogut ispolzovatsia razrabotchikami pri sozdanii ikh sobstvennykh struktur dannykh. Kniga vkliuchaet v sebia kak klassicheskie struktury dannykh, k primeru, krasno-chernye derevia i binomialnye ocheredi, tak i nekotorye novye struktury dannykh, sozdannye spetcialno dlia funktcionalnykh iazykov. Ves iskhodnyi kod privoditsia na Standartnom ML i Haskell, prichem bolshinstvo programm netrudno adaptirovat dlia drugikh funktcionalnykh iazykov programmirovaniia. eto izdanie predstavliaet soboi spravochnoe rukovodstvo dlia professionalnykh programmistov, rabotaiushchikh s funktcionalnymi iazykami, i mozhet takzhe ispolzovatsia v kachestve uchebnika dlia samostoiatelnogo izucheniia. Na saite izdatelstva DMK-Press vylozhen arkhiv s iskhodnymi tekstami realizatcii vsekh struktur dannykh na iazykakh Standartnyi ML i Haskell. Ikh mozhno ispolzovat v kachestve osnovy pri vypolnenii mnogochislennykh uprazhnenii.</p>",
-  tags: ["book", "programming", "haskell", "elixir", "scala"],
-  title: "Chisto funktsionalnye struktury dannyh", author: "Okasaki Kris",
-  bindingtypes: "Paperback", language: "Russian",
-  activefrom: "2017-02-03T05:31:52.066Z", category: "Books", channel: "amazon",
-  code: "AMZ2331", isbn: "9785970602331"]]
+products = <xml_document_to_with_product_data>
 
 MWSClient.submit_product_feed(products, cfg)
 
@@ -34,11 +28,11 @@ MWSClient.submit_product_feed(products, cfg)
          "SubmittedDate" => "2017-02-10T11:51:58+00:00"}}}}}
 ```
 
-#### submin_proice_feed
+#### submin_price_feed
 
 ```elixir
 
-prices = [[code: "AMZ2331", retailprice: %{"currency" => "USD", "value" => 2399}]]
+prices = <xml_document_with_price_data>
 
 MWSClient.submit_price_feed(prices, cfg)
 {:success,
@@ -52,7 +46,7 @@ MWSClient.submit_price_feed(prices, cfg)
 #### submit\_inventory\_feed
 
 ```elixir
-inventory = [[sku: "AMZ2331", quantity: 10]]
+inventory = <xml_document_with_inventory_data>
 
 MWSClient.submit_inventory_feed(inventory, cfg)
 {:success,
