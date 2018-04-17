@@ -8,7 +8,7 @@ defmodule MWSClient.Parser do
     resp = case get_content_type(headers) do
       "text/xml" <> _charset -> XmlToMap.naive_map(body)
       "text/plain;charset=" <> _charset ->
-        body |> String.split("\r\n") |> CSV.decode(separator: ?\t, headers: true)
+        body |> String.split("\r\n") |> CSV.decode!(separator: ?\t, headers: true)
     end
     wrap_response(status_code, resp)
   end

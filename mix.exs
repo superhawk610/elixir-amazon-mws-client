@@ -4,7 +4,7 @@ defmodule MWSClient.Mixfile do
   def project do
     [app: :mws_client,
      version: "0.0.1",
-     elixir: "~> 1.3",
+     elixir: "~> 1.6",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: "An Amazon MWS API client in Elixir",
@@ -26,7 +26,9 @@ defmodule MWSClient.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpoison, :timex]]
+    [
+      extra_applications: [:logger]
+    ]
   end
 
   # Dependencies can be Hex packages:
@@ -39,9 +41,9 @@ defmodule MWSClient.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [ {:csv, "~> 1.4.2"},
-      {:elixir_xml_to_map, github: "retgoat/elixir-xml-to-map", tag: "0.1.2"},
-      {:httpoison, "~> 0.11.0"},
+    [ {:csv, "~> 2.1.1"},
+      {:elixir_xml_to_map, github: "addico/elixir-xml-to-map", branch: "master"},
+      {:httpoison, "~> 1.0.0"},
       {:inflex, "~> 1.7.0" }, #camelize
       {:html_sanitize_ex, "~> 1.0.0"},
       {:timex, "~> 3.0"},
