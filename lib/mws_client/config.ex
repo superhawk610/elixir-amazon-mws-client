@@ -16,10 +16,10 @@ defmodule MWSClient.Config do
   ]
 
   def to_params(struct) do
-    %{"AWSAccessKeyId" => struct.aws_access_key_id,
-      "SellerId" => struct.seller_id,
-      "MWSAuthToken" => struct.mws_auth_token,
-      "SignatureMethod" => struct.signature_method,
+    %{"AWSAccessKeyId"   => struct.aws_access_key_id,
+      "SellerId"         => struct.seller_id,
+      "MWSAuthToken"     => struct.mws_auth_token,
+      "SignatureMethod"  => struct.signature_method,
       "SignatureVersion" => struct.signature_version,
     }
     |> Enum.reject(fn({_k, v}) -> v == nil end)

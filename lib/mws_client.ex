@@ -2,14 +2,16 @@ defmodule MWSClient do
 
   use HTTPoison.Base
 
-  alias MWSClient.Config
-  alias MWSClient.Operation
-  alias MWSClient.Request
-  alias MWSClient.Products
-  alias MWSClient.Feed
-  alias MWSClient.Subscriptions
-  alias MWSClient.Orders
-  alias MWSClient.Reports
+  alias MWSClient.{
+    Config,
+    Operation,
+    Request,
+    Products,
+    Feed,
+    Subscriptions,
+    Orders,
+    Reports
+  }
 
   @default_opts [marketplace_id: "ATVPDKIKX0DER"]
 
@@ -134,13 +136,16 @@ defmodule MWSClient do
     else
       post(uri, uri.query, operation.headers)
     end
+
     parse_response({status, response})
   end
 
-  defp parse_response({status, response}) do
-    case {status, response} do
-      {:ok, resp} -> MWSClient.Parser.parse(resp)
-      {:error, err} -> raise MWSClient.RequestError, message: inspect(err)
-    end
+  defp parse_response({:ok, response}) do
+    {:ok, %{response | body: MWSClient.Parser.parse(response)}}
   end
+
+  defp parse_response({:error, error}) do
+    {:error, error}
+  end
+
 end
