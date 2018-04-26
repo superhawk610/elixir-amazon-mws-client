@@ -1,10 +1,8 @@
 defmodule MWSClient.Reports do
-
   @version "2009-01-01"
   @path "/"
 
-  alias MWSClient.Utils
-  # alias MWSClient.Operation
+  import MWSClient.Utils
 
   @doc """
   Takes a required report_type and keyword list of options
@@ -16,19 +14,19 @@ defmodule MWSClient.Reports do
   - marketplace_id_list is [] of ids
   marketplace_id_list
   """
-
-  def request_report(report_type, opts \\ []) do
+  def request_report(report_type, opts) do
     white_list = [
       :start_date,
       :end_date,
       :report_options,
       :marketplace_id_list
     ]
+
     %{"Action" => "RequestReport",
       "ReportType" => report_type}
-    |> Utils.add(opts, white_list)
-    |> Utils.restructure("MarketplaceIdList", "Id")
-    |> Utils.to_operation(@version, @path)
+    |> add(opts, white_list)
+    |> restructure("MarketplaceIdList", "Id")
+    |> to_operation(@version, @path)
   end
 
   @doc """
@@ -43,20 +41,22 @@ defmodule MWSClient.Reports do
   option opts [String, #iso8601] :requested_from_date
   option opts [String, #iso8601] :requested_to_date
   """
+  def get_report_request_list(opts) do
+    white_list = [
+      :report_request_id_list,
+      :report_type_list,
+      :report_processing_status_list,
+      :max_count,
+      :requested_from_date,
+      :requested_to_date
+    ]
 
-  def get_report_request_list(opts \\ []) do
-    white_list = [:report_request_id_list,
-                  :report_type_list,
-                  :report_processing_status_list,
-                  :max_count,
-                  :requested_from_date,
-                  :requested_to_date]
     %{"Action" => "GetReportRequestList"}
-    |> Utils.add(opts, white_list)
-    |> Utils.restructure("ReportRequestIdList", "Id")
-    |> Utils.restructure("ReportTypeList", "Type")
-    |> Utils.restructure("ReportProcessingStatusList", "Status")
-    |> Utils.to_operation(@version, @path)
+    |> add(opts, white_list)
+    |> restructure("ReportRequestIdList", "Id")
+    |> restructure("ReportTypeList", "Type")
+    |> restructure("ReportProcessingStatusList", "Status")
+    |> to_operation(@version, @path)
   end
 
 
@@ -74,21 +74,21 @@ defmodule MWSClient.Reports do
   """
 
   def get_report_list(opts \\ []) do
-    white_list = [:max_couunt,
-                  :report_type_list,
-                  :acknowledged,
-                  :available_from_date,
-                  :available_to_date,
-                  :report_request_id_list
-                 ]
+    white_list = [
+      :max_couunt,
+      :report_type_list,
+      :acknowledged,
+      :available_from_date,
+      :available_to_date,
+      :report_request_id_list
+    ]
+
     %{"Action" => "GetReportList"}
-    |> Utils.add(opts, white_list)
-    |> Utils.restructure("ReportTypeList", "Type")
-    |> Utils.restructure("ReportRequestIdList", "Id")
-    |> Utils.to_operation(@version, @path)
+    |> add(opts, white_list)
+    |> restructure("ReportTypeList", "Type")
+    |> restructure("ReportRequestIdList", "Id")
+    |> to_operation(@version, @path)
   end
-
-
 
   @doc """
    Gets a report and its Content-MD5 header
@@ -98,12 +98,9 @@ defmodule MWSClient.Reports do
     return [Peddler::XMLParser] if report is in XML format
     return [Peddler::FlatFileParser] if report is a flat file
   """
-
   def get_report(report_id) do
     %{"Action" => "GetReport", "ReportId" => report_id}
-    |> Utils.to_operation(@version, @path)
+    |> to_operation(@version, @path)
   end
-
-
 
 end

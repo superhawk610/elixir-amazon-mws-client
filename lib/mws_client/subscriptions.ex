@@ -1,26 +1,24 @@
 defmodule MWSClient.Subscriptions do
-  alias MWSClient.Utils
-
   @version "2013-07-01"
   @path "/Subscriptions/#{@version}"
-  @default_market "ATVPDKIKX0DER"
 
+  import MWSClient.Utils
 
-  def register_destination(url, opts \\ [marketplace_id: @default_market]) do
+  def register_destination(url, opts) do
     %{"Action" => "RegisterDestination",
       "Destination.AttributeList.member.1.Key" => "sqsQueueUrl",
       "Destination.AttributeList.member.1.Value" => url,
       "Destination.DeliveryChannel" => "SQS"}
-      |> Utils.add(opts, [:marketplace_id])
-      |> Utils.to_operation(@version, @path)
+      |> add(opts, [:marketplace_id])
+      |> to_operation(@version, @path)
   end
 
-  def deregister_destination(url, opts \\ [marketplace_id: @default_market]) do
+  def deregister_destination(url, opts) do
     %{"Action" => "DeregisterDestination",
       "Destination.AttributeList.member.1.Key" => "sqsQueueUrl",
       "Destination.AttributeList.member.1.Value" => url,
       "Destination.DeliveryChannel" => "SQS"}
-      |> Utils.add(opts, [:marketplace_id])
-      |> Utils.to_operation(@version, @path)
+      |> add(opts, [:marketplace_id])
+      |> to_operation(@version, @path)
   end
 end

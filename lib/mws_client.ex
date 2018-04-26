@@ -13,110 +13,147 @@ defmodule MWSClient do
     Reports
   }
 
-  @default_opts [marketplace_id: "ATVPDKIKX0DER"]
-
   ### FEEDS
-  def submit_product_feed(xml, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
-                                                             purge_and_replace: false]) do
+  def submit_product_feed(xml, config = %Config{}, opts \\ [purge_and_replace: false]) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Feed.submit_product_feed(xml, opts)
     |> request(config)
   end
 
-  def submit_variation_feed(xml, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER"]) do
+  def submit_variation_feed(xml, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Feed.submit_variation_feed(xml, opts)
     |> request(config)
   end
 
-  def submit_product_by_asin(xml, config = %Config{}, opts \\ [marketplace_id: "ATVPDKIKX0DER",
-                                                             purge_and_replace: false]) do
+  def submit_product_by_asin(xml, config = %Config{}, opts \\ [purge_and_replace: false]) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Feed.submit_product_feed(xml, opts)
     |> request(config)
   end
 
-  def submit_price_feed(xml, config = %Config{}, opts \\ @default_opts) do
+  def submit_price_feed(xml, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Feed.submit_price_feed(xml, opts)
     |> request(config)
   end
 
-  def submit_inventory_feed(xml, config = %Config{}, opts \\ @default_opts) do
-    Feed.submit_inventory_feed(xml, opts)
-    |> request(config)
+  def submit_inventory_feed(xml, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
+    Feed.submit_inventory_feed(xml, opts) |> request(config)
   end
 
-  def submit_images_feed(xml, config = %Config{}, opts \\ @default_opts) do
+  def submit_images_feed(xml, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Feed.submit_images_feed(xml, opts)
     |> request(config)
   end
 
-  def get_feed_submission_result(feed_id, config = %Config{}, opts \\ @default_opts) do
+  def get_feed_submission_result(feed_id, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Feed.get_feed_submission_result(feed_id, opts)
     |> request(config)
   end
   ### FEEDS
 
   ### PRODUCTS
-  def list_matching_products(query, config = %Config{}, opts \\@default_opts) do
+  def list_matching_products(query, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Products.list_matching_products(query, opts)
     |> request(config)
   end
 
-  def get_product_by_asin(asin, config = %Config{}, opts \\ @default_opts) do
-    Products.get_matching_product(asin, opts)
+  def get_matching_product(asin_list, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
+    Products.get_matching_product(asin_list, opts)
     |> request(config)
   end
 
-  def get_product_categories_for_asin(asin, config = %Config{}, opts \\ @default_opts) do
+  def get_matching_product_for_id(id, id_list, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
+    Products.get_matching_product_for_id(id, id_list, opts)
+    |> request(config)
+  end
+
+  def get_lowest_offer_listings_for_asin(asin_list, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
+    Products.get_lowest_offer_listings_for_asin(asin_list, opts)
+    |> request(config)
+  end
+
+  def get_product_categories_for_asin(asin, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Products.get_product_categories_for_asin(asin, opts)
     |> request(config)
   end
 
-  def get_matching_product_for_id(id, id_list, config = %Config{}, opts \\ @default_opts) do
-    Products.get_matching_product_for_id(id, id_list, opts)
-    |> request(config)
-  end
   ### PRODUCTS
 
   ### SUBSCRIPTIONS
-  def subscribe_to_sqs(url, config = %Config{}, opts \\ @default_opts) do
+  def subscribe_to_sqs(url, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Subscriptions.register_destination(url, opts)
     |> request(config)
   end
 
-  def unsubscribe_from_sqs(url, config = %Config{}, opts \\ @default_opts) do
+  def unsubscribe_from_sqs(url, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Subscriptions.deregister_destination(url, opts)
     |> request(config)
   end
   ### SUBSCRIPTIONS
 
   ### ORDERS
-  def list_orders(params, config = %Config{}, opts \\ [marketplace_id: ["ATVPDKIKX0DER"]]) do
+  def list_orders(params, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: [config.site_id])
+
     Orders.list_orders(params, opts)
     |> request(config)
   end
 
-  def list_order_items(order_id, config = %Config{}, opts \\ @default_opts) do
+  def list_order_items(order_id, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Orders.list_order_items(order_id, opts)
     |> request(config)
   end
 
-  def get_order(order_id, config = %Config{}, opts \\ @default_opts) do
+  def get_order(order_id, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
     Orders.get_order(order_id, opts)
     |> request(config)
   end
   ### ORDERS
 
   ### REPORTS
-  def request_report(report_type, config = %Config{}, opts \\ [marketplace_id_list: ["ATVPDKIKX0DER"]]) do
+  def request_report(report_type, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id_list: [config.site_id])
+
     Reports.request_report(report_type, opts)
     |> request(config)
   end
 
-  def get_report_request_list(config = %Config{}, opts) do
+  def get_report_request_list(config = %Config{}, opts \\ []) do
     Reports.get_report_request_list(opts)
     |> request(config)
   end
 
-  def get_report_list(config = %Config{}, opts) do
+  def get_report_list(config = %Config{}, opts \\ []) do
     Reports.get_report_list(opts)
     |> request(config)
   end

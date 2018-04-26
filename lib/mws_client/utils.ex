@@ -24,7 +24,8 @@ defmodule MWSClient.Utils do
 
   defp numbered_params(_key, nil), do: %{}
   defp numbered_params(key, list) do
-    Enum.with_index(list, 1)
+    list
+    |> Enum.with_index(1)
     |> Enum.reduce(%{}, fn {value, index}, acc -> Map.merge(acc, %{"#{key}.#{index}" => value}) end)
   end
 
@@ -33,6 +34,7 @@ defmodule MWSClient.Utils do
       |> Enum.reject(fn {key, value} -> value == nil || invalid_key?(key, white_list) end)
       |> Enum.map(fn {key, value} -> { Inflex.camelize(key), value} end)
       |> Enum.into(%{})
+
     Map.merge(params, camelized_options)
   end
 

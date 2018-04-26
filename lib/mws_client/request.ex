@@ -1,25 +1,34 @@
 defmodule MWSClient.Request do
 
+  @hosts %{
+    # North America
+    "A2EUQ1WTGCTBG2" => "mws.amazonservices.com",     # Canada
+    "ATVPDKIKX0DER"  => "mws.amazonservices.com",     # US
+    "A1AM78C64UM0Y8" => "mws.amazonservices.com",     # Mexico
+
+    # Europe
+    "A1RKKUPIHCS9HS" => "mws-eu.amazonservices.com",  # Spain
+    "A1F83G8C2ARO7P" => "mws-eu.amazonservices.com",  # UK
+    "A13V1IB3VIYZZH" => "mws-eu.amazonservices.com",  # France
+    "A1PA6795UKMFR9" => "mws-eu.amazonservices.com",  # Germany
+    "APJ6JRA9NG5V4"  => "mws-eu.amazonservices.com",  # Italy
+
+    # Other
+    "A2Q3Y263D00KWC" => "mws.amazonservices.com",     # Brazil
+    "A21TJRUUN4KGV"  => "mws.amazonservices.in",      # India
+    "AAHKV2X7AFYLW"  => "mws.amazonservices.com.cn",  # China
+    "A1VC38T7YXB528" => "mws.amazonservices.jp",      # Japan
+    "A39IBJ37TRP1C6" => "mws.amazonservices.com.au",  # Australia
+  }
+
   alias MWSClient.Config
   alias MWSClient.Operation
 
   def to_uri(operation = %Operation{}, config = %Config{}) do
     query = config |> Config.to_params |> Map.merge(operation.params) |> percent_encode_query
-    %URI{scheme: "https", host: host(config.site_id), path: operation.path, query: query, port: 443}
+    %URI{scheme: "https", host: Map.fetch!(@hosts, config.site_id), path: operation.path, query: query, port: 443}
     |> sign_url(config, operation.timestamp, operation.method)
   end
-
-  def host("A2EUQ1WTGCTBG2"), do: "mws.amazonservices.ca"
-  def host("AAHKV2X7AFYLW"), do: "mws.amazonservices.com.cn"
-  def host("A1PA6795UKMFR9"), do: "mws-eu.amazonservices.com"
-  def host("A1RKKUPIHCS9HS"), do: "mws-eu.amazonservices.com"
-  def host("A13V1IB3VIYZZH"), do: "mws-eu.amazonservices.com"
-  def host("A1F83G8C2ARO7P"), do: "mws-eu.amazonservices.com"
-  def host("A21TJRUUN4KGV"), do: "mws.amazonservices.in"
-  def host("APJ6JRA9NG5V4"), do: "mws-eu.amazonservices.com"
-  def host("A1VC38T7YXB528"), do: "mws.amazonservices.jp"
-  def host("A1AM78C64UM0Y8"), do: "mws.amazonservices.com.mx"
-  def host("ATVPDKIKX0DER"), do: "mws.amazonservices.com"
 
   # `URI.encode_query/1` explicitly does not percent-encode spaces, but Amazon requires `%20`
   # instead of `+` in the query, so we essentially have to rewrite `URI.encode_query/1` and
