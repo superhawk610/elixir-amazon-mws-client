@@ -11,7 +11,7 @@ defmodule MWSClient.Mixfile do
      package: package(),
      deps: deps(),
      test_coverage: [tool: ExCoveralls],
-     preferred_cli_env: ["coveralls.html": :test, "coveralls": :test]]
+     preferred_cli_env: ["coveralls.html": :test, coveralls: :test]]
   end
 
   defp package do

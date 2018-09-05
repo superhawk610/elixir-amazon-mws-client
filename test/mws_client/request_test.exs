@@ -23,7 +23,7 @@ defmodule MWSClient.RequestTest do
 
   test "signs signature", %{config: config, operation: operation} do
     result = operation |> MWSClient.Request.to_uri(config)
-    assert result.query == "AWSAccessKeyId=SOMEACCESSID&Action=GetMatchingProductForId&IdList.Id.1=B00KO1C94A&IdType=ASIN&MarketplaceId=ATVPDKIKX0DER&SellerId=SELLERID&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2016-10-24T21%3A29%3A06Z&Version=2011-10-01&Signature=%2FNFONEGKZ7KciWnFHduCve%2FJZqZgCA24Ez1K6MiQK%2Fs%3D"
+    assert result.query == "AWSAccessKeyId=SOMEACCESSID&Action=GetMatchingProductForId&IdList.Id.1=B00KO1C94A&IdType=ASIN&MarketplaceId=ATVPDKIKX0DER&SellerId=SELLERID&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2016-10-24T21%3A29%3A06Z&Version=2011-10-01&Signature=SRmBAd%2BeH1gzRWZPUt4ZHrMBj1LVcU5wbdXQue7IVjw%3D"
   end
 
   test "sorts params lexicographically" do
