@@ -41,15 +41,16 @@ defmodule MWSClient.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [ {:csv, "~> 2.3.1"},
+    [ 
+      {:csv, "~> 2.4"},
       {:elixir_xml_to_map, github: "addico/elixir-xml-to-map", branch: "master"},
-      {:httpoison, "~> 1.6.1"},
-      {:inflex, "~> 2.0.0"}, #camelize
-      {:html_sanitize_ex, "~> 1.3"},
+      {:httpoison, "~> 1.7"},
+      {:inflex, "~> 2.1"}, #camelize
+      {:html_sanitize_ex, "~> 1.4"},
       {:timex, "~> 3.0"},
-      {:ex_doc, "~> 0.19", only: :dev},
+      {:ex_doc, "~> 0.23", only: :dev},
       {:exsync, "~> 0.2", only: :dev},
-      {:excoveralls, "~> 0.10", only: :test},
+      {:excoveralls, "~> 0.13", only: :test},
       {:erlsom, "~> 1.4"}
     ]
   end
