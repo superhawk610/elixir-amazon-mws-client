@@ -59,7 +59,8 @@ defmodule MWSClient.Request do
   end
 
   defp append_signature(url_parts, aws_secret_access_key, method) do
-    hmac = :crypto.hmac(
+    hmac = :crypto.mac(
+        :hmac,
         :sha256,
         aws_secret_access_key,
         Enum.join([method, url_parts.host, url_parts.path, url_parts.query], "\n")
