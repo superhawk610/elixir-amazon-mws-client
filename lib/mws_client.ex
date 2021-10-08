@@ -96,7 +96,6 @@ defmodule MWSClient do
     opts = Keyword.merge(opts, marketplace_id: config.site_id)
 
     Products.get_lowest_priced_offers_for_asin(asin, opts)
-    |> IO.inspect(label: "Request")
     |> request(config)
   end
 
