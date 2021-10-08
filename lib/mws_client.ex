@@ -1,5 +1,4 @@
 defmodule MWSClient do
-
   use HTTPoison.Base
 
   alias MWSClient.{
@@ -61,6 +60,7 @@ defmodule MWSClient do
     Feed.get_feed_submission_result(feed_id, opts)
     |> request(config)
   end
+
   ### FEEDS
 
   ### PRODUCTS
@@ -92,6 +92,14 @@ defmodule MWSClient do
     |> request(config)
   end
 
+  def get_lowest_priced_offers_for_asin(asin, config = %Config{}, opts \\ []) do
+    opts = Keyword.merge(opts, marketplace_id: config.site_id)
+
+    Products.get_lowest_priced_offers_for_asin(asin, opts)
+    |> IO.inspect(label: "Request")
+    |> request(config)
+  end
+
   def get_product_categories_for_asin(asin, config = %Config{}, opts \\ []) do
     opts = Keyword.merge(opts, marketplace_id: config.site_id)
 
@@ -115,6 +123,7 @@ defmodule MWSClient do
     Subscriptions.deregister_destination(url, opts)
     |> request(config)
   end
+
   ### SUBSCRIPTIONS
 
   ### ORDERS
@@ -138,6 +147,7 @@ defmodule MWSClient do
     Orders.get_order(order_id, opts)
     |> request(config)
   end
+
   ### ORDERS
 
   ### REPORTS
@@ -162,17 +172,23 @@ defmodule MWSClient do
     Reports.get_report(report_id)
     |> request(config)
   end
-  ### REPORTS
 
+  ### REPORTS
 
   def request(operation = %Operation{}, config = %Config{}) do
     uri = Request.to_uri(operation, config)
 
-    {status, response} = if operation.body do
-      post(uri, operation.body, operation.headers)
-    else
-      post(uri, uri.query, operation.headers)
-    end
+    {status, response} =
+      cond do
+        operation.method === "GET" ->
+          get(uri, operation.headers)
+
+        is_nil(operation.body) ->
+          post(uri, uri.query, operation.headers)
+
+        true ->
+          post(uri, operation.body, operation.headers)
+      end
 
     parse_response({status, response})
   end
@@ -184,5 +200,4 @@ defmodule MWSClient do
   defp parse_response({:error, error}) do
     {:error, error}
   end
-
 end

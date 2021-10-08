@@ -1,5 +1,4 @@
 defmodule MWSClient.Utils do
-
   alias MWSClient.Operation
   # `URI.encode_query/1` explicitly does not percent-encode spaces, but Amazon requires `%20`
   # instead of `+` in the query, so we essentially have to rewrite `URI.encode_query/1` and
@@ -11,7 +10,7 @@ defmodule MWSClient.Utils do
   # See comment on `percent_encode_query/1`.
   defp pair({k, v}) do
     URI.encode(Kernel.to_string(k), &URI.char_unreserved?/1) <>
-    "=" <> URI.encode(Kernel.to_string(v), &URI.char_unreserved?/1)
+      "=" <> URI.encode(Kernel.to_string(v), &URI.char_unreserved?/1)
   end
 
   # takes a map of params, removes a key and with the values of that key,
@@ -23,16 +22,20 @@ defmodule MWSClient.Utils do
   end
 
   defp numbered_params(_key, nil), do: %{}
+
   defp numbered_params(key, list) do
     list
     |> Enum.with_index(1)
-    |> Enum.reduce(%{}, fn {value, index}, acc -> Map.merge(acc, %{"#{key}.#{index}" => value}) end)
+    |> Enum.reduce(%{}, fn {value, index}, acc ->
+      Map.merge(acc, %{"#{key}.#{index}" => value})
+    end)
   end
 
   def add(params, options, white_list \\ []) do
-    camelized_options = options
+    camelized_options =
+      options
       |> Enum.reject(fn {key, value} -> value == nil || invalid_key?(key, white_list) end)
-      |> Enum.map(fn {key, value} -> { Inflex.camelize(key), value} end)
+      |> Enum.map(fn {key, value} -> {Inflex.camelize(key), value} end)
       |> Enum.into(%{})
 
     Map.merge(params, camelized_options)
@@ -47,7 +50,12 @@ defmodule MWSClient.Utils do
   end
 
   def to_operation(params, version, path, body \\ nil, headers \\ []) do
-    %Operation{params: Map.merge(params, %{"Version" => version}), path: path, body: body, headers: headers}
+    %Operation{
+      params: Map.merge(params, %{"Version" => version}),
+      path: path,
+      body: body,
+      headers: headers
+    }
   end
 
   def content_md5(data) do

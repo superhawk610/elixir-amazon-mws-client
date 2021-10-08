@@ -1,5 +1,4 @@
 defmodule MWSClient.Parser do
-
   @moduledoc """
   Parse the response body based on the headers.
   """
@@ -7,6 +6,9 @@ defmodule MWSClient.Parser do
   def parse(%{body: body, headers: headers}) do
     case get_content_type(headers) do
       "text/xml" <> _charset ->
+        XmlToMap.naive_map(body)
+
+      "application/xml" ->
         XmlToMap.naive_map(body)
 
       "text/plain;charset=" <> _charset ->
@@ -18,10 +20,9 @@ defmodule MWSClient.Parser do
   end
 
   defp get_content_type(headers) do
-    Enum.find_value headers, fn
+    Enum.find_value(headers, fn
       {"Content-Type", value} -> value
-      _                       -> false
-    end
+      _ -> false
+    end)
   end
-
 end
