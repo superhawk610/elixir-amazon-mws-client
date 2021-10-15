@@ -1,6 +1,7 @@
 defmodule MWSClient.Request do
   @hosts %{
     # North America
+
     # Canada
     "A2EUQ1WTGCTBG2" => "mws.amazonservices.com",
     # US
@@ -9,6 +10,7 @@ defmodule MWSClient.Request do
     "A1AM78C64UM0Y8" => "mws.amazonservices.com",
 
     # Europe
+
     # Spain
     "A1RKKUPIHCS9HS" => "mws-eu.amazonservices.com",
     # UK
@@ -21,6 +23,7 @@ defmodule MWSClient.Request do
     "APJ6JRA9NG5V4" => "mws-eu.amazonservices.com",
 
     # Other
+
     # Brazil
     "A2Q3Y263D00KWC" => "mws.amazonservices.com",
     # India
@@ -33,9 +36,12 @@ defmodule MWSClient.Request do
     "A39IBJ37TRP1C6" => "mws.amazonservices.com.au"
   }
 
+  import MWSClient.Utils
+
   alias MWSClient.Config
   alias MWSClient.Operation
 
+  @spec to_uri(Operation.t(), Config.t()) :: URI.t()
   def to_uri(operation = %Operation{}, config = %Config{}) do
     query =
       config
@@ -53,24 +59,16 @@ defmodule MWSClient.Request do
     |> sign_url(config, operation.timestamp, operation.method)
   end
 
-  # `URI.encode_query/1` explicitly does not percent-encode spaces, but Amazon requires `%20`
-  # instead of `+` in the query, so we essentially have to rewrite `URI.encode_query/1` and
-  # `URI.pair/1`.
-  def percent_encode_query(query_map) do
-    Enum.map_join(query_map, "&", &pair/1)
-  end
-
   # See comment on `percent_encode_query/1`.
-  defp pair({k, v}) do
-    URI.encode(to_string(k), &URI.char_unreserved?/1) <>
-      "=" <> URI.encode(to_string(v), &URI.char_unreserved?/1)
-  end
 
-  def sign_url(url_parts = %URI{}, config, timestamp, method) do
+  @spec sign_url(URI.t(), Config.t(), any, method :: String.t()) :: URI.t()
+  def sign_url(url_parts = %URI{}, config = %Config{}, timestamp, method) do
     url_parts
     |> add_timestamp(timestamp)
     |> append_signature(config.aws_secret_access_key, method)
   end
+
+  # HELPERS
 
   defp add_timestamp(url_parts, timestamp) do
     time = timestamp || DateTime.to_iso8601(DateTime.utc_now())

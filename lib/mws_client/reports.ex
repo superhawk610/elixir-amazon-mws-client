@@ -4,6 +4,8 @@ defmodule MWSClient.Reports do
 
   import MWSClient.Utils
 
+  alias MWSClient.Operation
+
   @doc """
   Takes a required report_type and keyword list of options
   report_request("_GET_FLAT_FILE_ORDERS_DATA_",[])
@@ -14,6 +16,7 @@ defmodule MWSClient.Reports do
   - marketplace_id_list is [] of ids
   marketplace_id_list
   """
+  @spec request_report(report_type :: String.t(), opts :: keyword()) :: Operation.t()
   def request_report(report_type, opts) do
     white_list = [
       :start_date,
@@ -22,8 +25,7 @@ defmodule MWSClient.Reports do
       :marketplace_id_list
     ]
 
-    %{"Action" => "RequestReport",
-      "ReportType" => report_type}
+    %{"Action" => "RequestReport", "ReportType" => report_type}
     |> add(opts, white_list)
     |> restructure("MarketplaceIdList", "Id")
     |> to_operation(@version, @path)
@@ -41,6 +43,7 @@ defmodule MWSClient.Reports do
   option opts [String, #iso8601] :requested_from_date
   option opts [String, #iso8601] :requested_to_date
   """
+  @spec get_report_request_list(opts :: keyword()) :: Operation.t()
   def get_report_request_list(opts) do
     white_list = [
       :report_request_id_list,
@@ -59,7 +62,6 @@ defmodule MWSClient.Reports do
     |> to_operation(@version, @path)
   end
 
-
   @doc """
     Lists reports
 
@@ -72,7 +74,7 @@ defmodule MWSClient.Reports do
     option opts [String, #iso8601] :available_to_date
     option opts [<String>, String] :report_request_id_list]
   """
-
+  @spec get_report_list(opts :: keyword()) :: Operation.t()
   def get_report_list(opts \\ []) do
     white_list = [
       :max_couunt,
@@ -98,9 +100,9 @@ defmodule MWSClient.Reports do
     return [Peddler::XMLParser] if report is in XML format
     return [Peddler::FlatFileParser] if report is a flat file
   """
+  @spec get_report(report_id :: String.t()) :: Operation.t()
   def get_report(report_id) do
     %{"Action" => "GetReport", "ReportId" => report_id}
     |> to_operation(@version, @path)
   end
-
 end

@@ -1,6 +1,4 @@
 defmodule MWSClient do
-  use HTTPoison.Base
-
   alias MWSClient.{
     Config,
     Operation,
@@ -9,7 +7,8 @@ defmodule MWSClient do
     Feed,
     Subscriptions,
     Orders,
-    Reports
+    Reports,
+    Parser
   }
 
   ### FEEDS
@@ -61,8 +60,6 @@ defmodule MWSClient do
     |> request(config)
   end
 
-  ### FEEDS
-
   ### PRODUCTS
   def list_matching_products(query, config = %Config{}, opts \\ []) do
     opts = Keyword.merge(opts, marketplace_id: config.site_id)
@@ -106,8 +103,6 @@ defmodule MWSClient do
     |> request(config)
   end
 
-  ### PRODUCTS
-
   ### SUBSCRIPTIONS
   def subscribe_to_sqs(url, config = %Config{}, opts \\ []) do
     opts = Keyword.merge(opts, marketplace_id: config.site_id)
@@ -122,8 +117,6 @@ defmodule MWSClient do
     Subscriptions.deregister_destination(url, opts)
     |> request(config)
   end
-
-  ### SUBSCRIPTIONS
 
   ### ORDERS
   def list_orders(params, config = %Config{}, opts \\ []) do
@@ -146,8 +139,6 @@ defmodule MWSClient do
     Orders.get_order(order_id, opts)
     |> request(config)
   end
-
-  ### ORDERS
 
   ### REPORTS
   def request_report(report_type, config = %Config{}, opts \\ []) do
@@ -172,28 +163,34 @@ defmodule MWSClient do
     |> request(config)
   end
 
-  ### REPORTS
+  ### HELPERS
 
-  def request(operation = %Operation{}, config = %Config{}) do
+  defp request(operation = %Operation{}, config = %Config{}) do
     uri = Request.to_uri(operation, config)
 
     {status, response} =
       cond do
         operation.method === "GET" ->
-          get(uri, operation.headers)
+          uri
+          |> URI.to_string()
+          |> HTTPoison.get(operation.headers)
 
         is_nil(operation.body) ->
-          post(uri, uri.query, operation.headers)
+          uri
+          |> URI.to_string()
+          |> HTTPoison.post(uri.query, operation.headers)
 
         true ->
-          post(uri, operation.body, operation.headers)
+          uri
+          |> URI.to_string()
+          |> HTTPoison.post(operation.body, operation.headers)
       end
 
     parse_response({status, response})
   end
 
-  defp parse_response({:ok, response}) do
-    {:ok, %{response | body: MWSClient.Parser.parse(response)}}
+  defp parse_response({:ok, response = %HTTPoison.Response{}}) do
+    {:ok, %HTTPoison.Response{response | body: Parser.parse(response)}}
   end
 
   defp parse_response({:error, error}) do

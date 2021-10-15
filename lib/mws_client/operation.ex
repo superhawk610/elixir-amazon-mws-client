@@ -1,3 +1,5 @@
 defmodule MWSClient.Operation do
-  defstruct [params: %{}, path: "/", timestamp: nil, method: "POST", body: nil, headers: []]
+  @type t :: %__MODULE__{}
+
+  defstruct params: %{}, path: "/", timestamp: nil, method: "POST", body: nil, headers: []
 end

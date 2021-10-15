@@ -3,6 +3,10 @@ defmodule MWSClient.Parser do
   Parse the response body based on the headers.
   """
 
+  @doc """
+  Parse the response from MWS into a usable format
+  """
+  @spec parse(HTTPoison.Response.t()) :: map() | list()
   def parse(%{body: body, headers: headers}) do
     case get_content_type(headers) do
       "text/xml" <> _charset ->
@@ -18,6 +22,8 @@ defmodule MWSClient.Parser do
         |> Enum.to_list()
     end
   end
+
+  # Helpers
 
   defp get_content_type(headers) do
     Enum.find_value(headers, fn
