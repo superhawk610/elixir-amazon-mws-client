@@ -18,6 +18,7 @@ defmodule MWSClient.Parser do
       "text/plain;charset=" <> _charset ->
         body
         |> String.split("\r\n")
+        |> Stream.map(&"#{&1}\n")
         |> CSV.decode!(separator: ?\t, headers: true)
         |> Enum.to_list()
     end
